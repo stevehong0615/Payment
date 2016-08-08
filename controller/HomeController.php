@@ -1,11 +1,19 @@
 <?php
 class HomeController extends Controller{
-    // 主頁 & 帳目明細
+    
+    // 主頁
     function index()
     {
+        $this->view("index");
+    }
+    
+    // 明細查詢
+    function allList()
+    {
+        $detailName = $_POST['detailName'];
         $sql = $this->model("Payment");
-        $data = $sql->findAll();
-        $this->view("index", $data);
+        $data = $sql->findAll($detailName);
+        $this->view("detail", $data);
     }
     
     // 出款

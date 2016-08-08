@@ -1,13 +1,16 @@
 <?php
 class Payment extends Connect{
+    
     // 抓取資料表全部資料
-    function findAll()
+    function findAll($detailName)
     {
-        $balance = $this->db->prepare("SELECT * FROM `count_action`");
+        $balance = $this->db->prepare("SELECT * FROM `count_action` WHERE `user_name` = :user_name");
+        $balance->bindParam(':user_name', $detailName);
         $balance->execute();
         $result = $balance->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+    
     // 寫入出款金額與計算餘額
     function outCount($num)
     {
