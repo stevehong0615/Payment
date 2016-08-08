@@ -14,7 +14,18 @@ class HomeController extends Controller{
         if(isset($_POST['btn'])) {
             $num = $_POST['outNumber'];
             $sql = $this->model("Payment");
-            $data = $sql->takeCount($num);
+            $data = $sql->outCount($num);
+            header("location:/Payment/");
+        }
+    }
+    
+    // 存款
+    function inMoney()
+    {
+        if(isset($_POST['btn'])) {
+            $num = $_POST['inNumber'];
+            $sql = $this->model("Payment");
+            $data = $sql->inCount($num);
             header("location:/Payment/");
         }
     }

@@ -10,7 +10,7 @@
         <input type = "submit" name="btn" value = "出款">
     </form>
     </br>
-    <form method="post" action="">
+    <form method="post" action="/Payment/Home/inMoney">
         <input type="text" name="inNumber" value="">
         <input type = "submit" name="btn" value = "存款">
     </form>
