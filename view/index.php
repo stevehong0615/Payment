@@ -5,15 +5,14 @@
 <title>簡易銀行系統</title>
 </head>
 <body>
+    <form method="post" action="/Payment/Home/outMoney">
+        <input type="text" name="outNumber" value="">
+        <input type = "submit" name="btn" value = "出款">
+    </form>
+    </br>
     <form method="post" action="">
-        <p>
-            <input type="text" name="out" value="">
-            <input type = "submit" name="btn1" value = "出款">
-        </p>
-        <p>
-            <input type="text" name="in" value="">
-            <input type = "submit" name="btn2" value = "存款">
-        </p>
+        <input type="text" name="inNumber" value="">
+        <input type = "submit" name="btn" value = "存款">
     </form>
 ----------------------------------------------    
     <table>
