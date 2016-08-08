@@ -33,10 +33,12 @@ class HomeController extends Controller{
     function inMoney()
     {
         if(isset($_POST['btn'])) {
+            $name = $_POST['inName'];
             $num = $_POST['inNumber'];
             $sql = $this->model("Payment");
-            $data = $sql->inCount($num);
-            header("location:/Payment/");
+            $data = $sql->inCount($name, $num);
+            $this->view("alert", '成功存款');
+            header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
         }
     }
 }

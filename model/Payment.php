@@ -39,10 +39,11 @@ class Payment extends Connect{
     }
     
     // 寫入存款金額與計算餘額
-    function inCount($num)
+    function inCount($name, $num)
     {
         // 撈出目前餘額
-        $balance = $this->db->prepare("SELECT `money` FROM `Balance`");
+        $balance = $this->db->prepare("SELECT `money` FROM `Balance` WHERE `user_name` = :user_name");
+        $balance->bindParam(':user_name', $name);
         $balance->execute();
         $result = $balance->fetchAll(PDO::FETCH_ASSOC);
         
@@ -50,13 +51,15 @@ class Payment extends Connect{
         $balanceNum = $result[0]['money'] + $num;
         
         // 將餘額存入資料表
-        $inCountData = $this->db->prepare("INSERT INTO `count_action` (`in`, `balance_action`) VALUES (:in, :balance_action)");
+        $inCountData = $this->db->prepare("INSERT INTO `count_action` (`user_name`, `in`, `balance_action`) VALUES (:user_name, :in, :balance_action)");
+        $inCountData->bindParam(':user_name', $name);
         $inCountData->bindParam(':in', $num);
         $inCountData->bindParam(':balance_action', $balanceNum);
         $inCountData->execute();
         
         // 修改目前餘額
-        $inBalanceData = $this->db->prepare("UPDATE `Balance` SET `money` = :money");
+        $inBalanceData = $this->db->prepare("UPDATE `Balance` SET `money` = :money WHERE `user_name` = :user_name");
+        $inBalanceData->bindParam(':user_name', $name);
         $inBalanceData->bindParam(':money', $balanceNum);
         $inBalanceData->execute();
         return true;
