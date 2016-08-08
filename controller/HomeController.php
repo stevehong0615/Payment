@@ -20,10 +20,12 @@ class HomeController extends Controller{
     function outMoney()
     {
         if(isset($_POST['btn'])) {
+            $name = $_POST['outName'];
             $num = $_POST['outNumber'];
             $sql = $this->model("Payment");
-            $data = $sql->outCount($num);
-            header("location:/Payment/");
+            $data = $sql->outCount($name, $num);
+            $this->view("alert", '成功出款');
+            header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
         }
     }
     
