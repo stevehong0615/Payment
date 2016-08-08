@@ -17,6 +17,12 @@ class Payment extends Connect{
         $result = $balance->fetchAll(PDO::FETCH_ASSOC);
         
         // 餘額扣除出款金額
-        $num = $result[0]['money']-$num;
+        $balanceNum = $result[0]['money']-$num;
+        
+        // 將餘額存入資料表
+        $inCountData = $this->db->prepare("INSERT INTO `count_action` (`out`, `balance_action`) VALUES (:out, :balance_action)");
+        $inCountData->bindParam(':out', $num);
+        $inCountData->bindParam(':balance_action', $balanceNum);
+        $inCountData->execute();
     }
 }
