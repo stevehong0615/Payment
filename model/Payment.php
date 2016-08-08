@@ -11,9 +11,12 @@ class Payment extends Connect{
     // 寫入出款金額與計算餘額
     function takeCount($num)
     {
+        // 撈出目前餘額
         $balance = $this->db->prepare("SELECT `money` FROM `Balance`");
         $balance->execute();
         $result = $balance->fetchAll(PDO::FETCH_ASSOC);
-        echo $result[0]['money'];
+        
+        // 餘額扣除出款金額
+        $num = $result[0]['money']-$num;
     }
 }
