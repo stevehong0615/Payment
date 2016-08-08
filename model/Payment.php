@@ -24,5 +24,11 @@ class Payment extends Connect{
         $inCountData->bindParam(':out', $num);
         $inCountData->bindParam(':balance_action', $balanceNum);
         $inCountData->execute();
+        
+        // 修改目前餘額
+        $inBalanceData = $this->db->prepare("UPDATE `Balance` SET `money` = :money");
+        $inBalanceData->bindParam(':money', $balanceNum);
+        $inBalanceData->execute();
+        return true;
     }
 }

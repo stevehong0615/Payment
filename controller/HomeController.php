@@ -15,8 +15,7 @@ class HomeController extends Controller{
             $num = $_POST['outNumber'];
             $sql = $this->model("Payment");
             $data = $sql->takeCount($num);
-            // $this->view("alert", '已出款');
-            // header("refresh:0, url:https://lab-stevehong0615.c9users.io/Payment/");
+            header("location:/Payment/");
         }
     }
 }
