@@ -39,9 +39,8 @@ class Payment extends Connect
 
             $this->db->commit();
 
-        } catch(Exception $err) {
+        } catch (Exception $err) {
             $this->db->rollBack();
-            $msg = $err->getMessage();
         }
 
         return true;
@@ -75,7 +74,6 @@ class Payment extends Connect
 
         } catch (Exception $err) {
             $this->db->rollBack();
-            $msg = $err->getMessage();
         }
 
         return true;
