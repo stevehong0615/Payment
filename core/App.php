@@ -1,16 +1,18 @@
 <?php
-class App 
+
+class App
 {
-   public function __construct()
-   {
+    public function __construct()
+    {
         $url = $this->parseUrl();
 
         $controllerName = "{$url[0]}Controller";
         if(!$url)
         $controllerName = "HomeController";
 
-        if (!file_exists("controller/$controllerName.php"))
+        if (!file_exists("controller/$controllerName.php")) {
             header("location:/Payment/");
+        }
 
         require_once "controller/$controllerName.php";
         $controller = new $controllerName;

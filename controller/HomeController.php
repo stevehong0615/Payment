@@ -1,4 +1,5 @@
 <?php
+
 class HomeController extends Controller
 {
     // 主頁
@@ -19,7 +20,7 @@ class HomeController extends Controller
     // 出款
     function outMoney()
     {
-        if(isset($_POST['btn'])) {
+        if (isset($_POST['btn'])) {
             $name = $_POST['outName'];
             $num = $_POST['outNumber'];
             $sql = $this->model("Payment");

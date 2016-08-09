@@ -1,4 +1,5 @@
 <?php
+
 class Payment extends Connect
 {
     // 抓取資料表全部資料
@@ -23,7 +24,6 @@ class Payment extends Connect
             $balance->execute();
             $result = $balance->fetchAll(PDO::FETCH_ASSOC);
 
-            sleep(5);
             // 餘額扣除出款金額
             $balanceNum = $result[0]['money'] - $num;
 
@@ -44,7 +44,8 @@ class Payment extends Connect
         } catch(Exception $err) {
             $this->db->rollBack();
             $msg = $err->getMessage();
-        } 
+        }
+
         return true;
     }
 
@@ -60,7 +61,6 @@ class Payment extends Connect
             $balance->execute();
             $result = $balance->fetchAll(PDO::FETCH_ASSOC);
 
-            sleep(5);
             // 餘額加上存入金額
             $balanceNum = $result[0]['money'] + $num;
 
@@ -81,7 +81,8 @@ class Payment extends Connect
         } catch (Exception $err) {
             $this->db->rollBack();
             $msg = $err->getMessage();
-        } 
+        }
+
         return true;
     }
 }
