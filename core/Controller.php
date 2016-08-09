@@ -22,4 +22,3 @@ class Controller
         require_once "view/$view.php";
     }
 }
-?>
