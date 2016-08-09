@@ -1,8 +1,9 @@
 <?php
-
-class App {
+class App 
+{
     
-   public function __construct() {
+   public function __construct() 
+   {
         $url = $this->parseUrl();
         
         $controllerName = "{$url[0]}Controller";
@@ -23,7 +24,8 @@ class App {
         call_user_func_array(Array($controller, $methodName), $params);
     }
     
-    public function parseUrl() {
+    public function parseUrl() 
+    {
         if (isset($_GET["url"])) {
             $url = rtrim($_GET["url"], "/");
             $url = explode("/", $url);
@@ -32,5 +34,4 @@ class App {
     }
     
 }
-
 ?>

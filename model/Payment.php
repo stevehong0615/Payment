@@ -85,3 +85,4 @@ class Payment extends Connect{
         return true;
     }
 }
+?>
