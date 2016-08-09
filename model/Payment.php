@@ -1,6 +1,6 @@
 <?php
-class Payment extends Connect{
-    
+class Payment extends Connect
+{
     // 抓取資料表全部資料
     function findAll($detailName)
     {

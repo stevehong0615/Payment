@@ -1,6 +1,6 @@
 <?php
-class HomeController extends Controller{
-    
+class HomeController extends Controller
+{
     // 主頁
     function index()
     {
