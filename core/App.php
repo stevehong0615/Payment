@@ -1,20 +1,20 @@
 <?php
 class App 
 {
-   public function __construct() 
+   public function __construct()
    {
         $url = $this->parseUrl();
-        
+
         $controllerName = "{$url[0]}Controller";
         if(!$url)
         $controllerName = "HomeController";
-        
+
         if (!file_exists("controller/$controllerName.php"))
             header("location:/Payment/");
-            
+
         require_once "controller/$controllerName.php";
         $controller = new $controllerName;
-        
+
         $methodName = isset($url[1]) ? $url[1] : "index";
         if (!method_exists($controller, $methodName))
             return;
@@ -22,8 +22,8 @@ class App
         $params = $url ? array_values($url) : Array();
         call_user_func_array(Array($controller, $methodName), $params);
     }
-    
-    public function parseUrl() 
+
+    public function parseUrl()
     {
         if (isset($_GET["url"])) {
             $url = rtrim($_GET["url"], "/");

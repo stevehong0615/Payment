@@ -6,7 +6,7 @@ class HomeController extends Controller
     {
         $this->view("index");
     }
-    
+
     // 明細查詢
     function allList()
     {
@@ -15,7 +15,7 @@ class HomeController extends Controller
         $data = $sql->findAll($detailName);
         $this->view("detail", $data);
     }
-    
+
     // 出款
     function outMoney()
     {
@@ -28,7 +28,7 @@ class HomeController extends Controller
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
         }
     }
-    
+
     // 存款
     function inMoney()
     {
