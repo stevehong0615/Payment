@@ -41,7 +41,7 @@ class Payment extends Connect
             $inBalanceData->execute();
 
             $this->db->commit();
-        } catch (Exception $err) {
+        } catch(Exception $err) {
             $this->db->rollBack();
             $msg = $err->getMessage();
         } 
