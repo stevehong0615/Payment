@@ -14,7 +14,7 @@ class Payment extends Connect
     }
 
     // 寫入出款金額與計算餘額
-    function outCount($name, $num)
+    function dispensingModel($name, $num)
     {
         try {
             $this->db->beginTransaction();
@@ -47,7 +47,7 @@ class Payment extends Connect
     }
 
     // 寫入存款金額與計算餘額
-    function inCount($name, $num)
+    function depositModel($name, $num)
     {
         try {
             $this->db->beginTransaction();

@@ -20,14 +20,14 @@ class HomeController extends Controller
     }
 
     // 出款
-    function outMoney()
+    function dispensing()
     {
         if (isset($_POST['btn'])) {
             $name = $_POST['outName'];
             $num = $_POST['outNumber'];
 
             $usePaymentModel = $this->model("Payment");
-            $data = $usePaymentModel->outCount($name, $num);
+            $data = $usePaymentModel->dispensingModel($name, $num);
 
             $this->view("alert", '成功出款');
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
@@ -35,14 +35,14 @@ class HomeController extends Controller
     }
 
     // 存款
-    function inMoney()
+    function deposit()
     {
         if(isset($_POST['btn'])) {
             $name = $_POST['inName'];
             $num = $_POST['inNumber'];
 
             $usePaymentModel = $this->model("Payment");
-            $data = $usePaymentModel->inCount($name, $num);
+            $data = $usePaymentModel->depositModel($name, $num);
 
             $this->view("alert", '成功存款');
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");

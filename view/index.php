@@ -5,7 +5,7 @@
 <title>簡易銀行系統</title>
 </head>
 <body>
-    <form method="post" action="/Payment/Home/outMoney">
+    <form method="post" action="/Payment/Home/dispensing">
         輸入姓名：
         <input type="text" name="outName" value="">
         輸入金額：
@@ -13,7 +13,7 @@
         <input type = "submit" name="btn" value = "出款">
     </form>
     </br>
-    <form method="post" action="/Payment/Home/inMoney">
+    <form method="post" action="/Payment/Home/deposit">
         輸入姓名：
         <input type="text" name="inName" value="">
         輸入金額：

@@ -24,7 +24,8 @@ class App
             return;
         }
 
-        unset($url[0]); unset($url[1]);
+        unset($url[0]);
+        unset($url[1]);
         $params = $url ? array_values($url) : array();
         call_user_func_array(array($controller, $methodName), $params);
     }
