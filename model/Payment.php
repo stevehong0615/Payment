@@ -53,7 +53,7 @@ class Payment extends Connect
         try {
             $this->db->beginTransaction();
 
-            $balance = $this->db->prepare("SELECT `money` FROM `Balance` WHERE `user_name` = :user_name");
+            $balance = $this->db->prepare("SELECT `money` FROM `Balance` WHERE `user_name` = :user_name FOR UPDATE");
             $balance->bindParam(':user_name', $name);
             $balance->execute();
             $result = $balance->fetchAll(PDO::FETCH_ASSOC);

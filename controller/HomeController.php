@@ -13,8 +13,8 @@ class HomeController extends Controller
     {
         $detailName = $_POST['detailName'];
 
-        $sql = $this->model("Payment");
-        $data = $sql->findAll($detailName);
+        $usePaymentModel = $this->model("Payment");
+        $data = $usePaymentModel->findAll($detailName);
 
         $this->view("detail", $data);
     }
@@ -26,8 +26,8 @@ class HomeController extends Controller
             $name = $_POST['outName'];
             $num = $_POST['outNumber'];
 
-            $sql = $this->model("Payment");
-            $data = $sql->outCount($name, $num);
+            $usePaymentModel = $this->model("Payment");
+            $data = $usePaymentModel->outCount($name, $num);
 
             $this->view("alert", '成功出款');
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
@@ -41,8 +41,8 @@ class HomeController extends Controller
             $name = $_POST['inName'];
             $num = $_POST['inNumber'];
 
-            $sql = $this->model("Payment");
-            $data = $sql->inCount($name, $num);
+            $usePaymentModel = $this->model("Payment");
+            $data = $usePaymentModel->inCount($name, $num);
 
             $this->view("alert", '成功存款');
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
