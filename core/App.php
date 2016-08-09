@@ -7,8 +7,9 @@ class App
         $url = $this->parseUrl();
 
         $controllerName = "{$url[0]}Controller";
-        if(!$url)
-        $controllerName = "HomeController";
+        if (!$url) {
+            $controllerName = "HomeController";
+        }
 
         if (!file_exists("controller/$controllerName.php")) {
             header("location:/Payment/");
@@ -19,6 +20,7 @@ class App
 
         $methodName = isset($url[1]) ? $url[1] : "index";
         if (!method_exists($controller, $methodName)) {
+
             return;
         }
 
@@ -32,7 +34,7 @@ class App
         if (isset($_GET["url"])) {
             $url = rtrim($_GET["url"], "/");
             $url = explode("/", $url);
-            
+
             return $url;
         }
     }
