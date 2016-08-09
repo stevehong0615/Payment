@@ -7,16 +7,6 @@ class Controller
         return new $model ();
     }
 
-    public function css($name)
-    {
-        echo '<link rel="stylesheet" href="/Activity/css/'.$name.'.css"/>';
-    }
-
-    public function script($name)
-    {
-        echo '<script src="/Activity/js/'.$name.'.js"></script>';
-    }
-
     public function view($view, $data = array())
     {
         require_once "view/$view.php";

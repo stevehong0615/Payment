@@ -18,8 +18,10 @@ class App
         $controller = new $controllerName;
 
         $methodName = isset($url[1]) ? $url[1] : "index";
-        if (!method_exists($controller, $methodName))
+        if (!method_exists($controller, $methodName)) {
             return;
+        }
+
         unset($url[0]); unset($url[1]);
         $params = $url ? array_values($url) : array();
         call_user_func_array(array($controller, $methodName), $params);
@@ -30,6 +32,7 @@ class App
         if (isset($_GET["url"])) {
             $url = rtrim($_GET["url"], "/");
             $url = explode("/", $url);
+            
             return $url;
         }
     }
