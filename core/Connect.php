@@ -4,6 +4,7 @@
 class Connect
 {
     public $db;
+
     public function __construct()
     {
         $this->db = new PDO (

@@ -7,6 +7,7 @@ class App
         $url = $this->parseUrl();
 
         $controllerName = "{$url[0]}Controller";
+
         if (!$url) {
             $controllerName = "HomeController";
         }
@@ -16,9 +17,11 @@ class App
         }
 
         require_once "controller/$controllerName.php";
+
         $controller = new $controllerName;
 
         $methodName = isset($url[1]) ? $url[1] : "index";
+
         if (!method_exists($controller, $methodName)) {
 
             return;
@@ -26,6 +29,7 @@ class App
 
         unset($url[0]);
         unset($url[1]);
+
         $params = $url ? array_values($url) : array();
         call_user_func_array(array($controller, $methodName), $params);
     }
