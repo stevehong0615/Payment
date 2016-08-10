@@ -15,9 +15,9 @@
     </br>
     <form method="post" action="/Payment/Home/deposit">
         輸入姓名：
-        <input type="text" name="inName" value="">
+        <input type="text" name="depositId" value="">
         輸入金額：
-        <input type="text" name="inNumber" value="">
+        <input type="text" name="depositNumber" value="">
         <input type = "submit" name="btn" value = "存款">
     </form>
     <br/>
