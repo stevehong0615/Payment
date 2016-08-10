@@ -40,11 +40,13 @@ class HomeController extends Controller
     function deposit()
     {
         if(isset($_POST['btn'])) {
+            date_default_timezone_set('Asia/Taipei');
+            $dateTime = date("Y-m-d H:i:s");
             $name = $_POST['inName'];
             $num = $_POST['inNumber'];
 
             $usePaymentModel = $this->model("Payment");
-            $data = $usePaymentModel->depositModel($name, $num);
+            $data = $usePaymentModel->depositModel($name, $num, $dateTime);
 
             $this->view("alert", '成功存款');
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");

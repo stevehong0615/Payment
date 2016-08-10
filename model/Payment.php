@@ -48,7 +48,7 @@ class Payment extends Connect
     }
 
     // 寫入存款金額與計算餘額
-    function depositModel($name, $num)
+    function depositModel($name, $num, $dateTime)
     {
         try {
             $this->db->beginTransaction();
@@ -60,10 +60,11 @@ class Payment extends Connect
 
             $balanceNum = $result[0]['money'] + $num;
 
-            $inCountData = $this->db->prepare("INSERT INTO `count_action` (`user_name`, `in`, `balance_action`) VALUES (:user_name, :in, :balance_action)");
+            $inCountData = $this->db->prepare("INSERT INTO `count_action` (`user_name`, `in`, `balance_action`, `time`) VALUES (:user_name, :in, :balance_action, :time)");
             $inCountData->bindParam(':user_name', $name);
             $inCountData->bindParam(':in', $num);
             $inCountData->bindParam(':balance_action', $balanceNum);
+            $inCountData->bindParam(':time', $dateTime);
             $inCountData->execute();
 
             $inBalanceData = $this->db->prepare("UPDATE `Balance` SET `money` = :money WHERE `user_name` = :user_name");
