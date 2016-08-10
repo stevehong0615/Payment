@@ -5,7 +5,10 @@ class Payment extends Connect
     // 抓取資料表全部資料
     function findAll($detailId)
     {
-        $balance = $this->db->prepare("SELECT * FROM `count_action` WHERE `user_id` = :user_id");
+        $sqlBalance = "SELECT *
+                    FROM `count_action`
+                    WHERE `user_id` = :user_id";
+        $balance = $this->db->prepare($sqlBalance);
         $balance->bindParam(':user_id', $detailId);
         $balance->execute();
         $result = $balance->fetchAll(PDO::FETCH_ASSOC);
@@ -19,21 +22,29 @@ class Payment extends Connect
         try {
             $this->db->beginTransaction();
 
-            $balance = $this->db->prepare("SELECT `money` FROM `Balance` WHERE `user_id` = :user_id FOR UPDATE");
+            $sqlBalance = "SELECT `money`
+                        FROM `Balance`
+                        WHERE `user_id` = :user_id FOR UPDATE";
+            $balance = $this->db->prepare($sqlBalance);
             $balance->bindParam(':user_id', $dispensingId);
             $balance->execute();
             $result = $balance->fetchAll(PDO::FETCH_ASSOC);
 
             $balanceNum = $result[0]['money'] - $num;
 
-            $inCountData = $this->db->prepare("INSERT INTO `count_action` (`user_id`, `out`, `balance_action`, `time`) VALUES (:user_id, :out, :balance_action, :time)");
+            $sqlAddDetail = "INSERT INTO `count_action` (`user_id`, `out`, `balance_action`, `time`)
+                            VALUES (:user_id, :out, :balance_action, :time)";
+            $inCountData = $this->db->prepare($sqlAddDetail);
             $inCountData->bindParam(':user_id', $dispensingId);
             $inCountData->bindParam(':out', $num);
             $inCountData->bindParam(':balance_action', $balanceNum);
             $inCountData->bindParam(':time', $dateTime);
             $inCountData->execute();
 
-            $inBalanceData = $this->db->prepare("UPDATE `Balance` SET `money` = :money WHERE `user_id` = :user_id");
+            $sqlBalanceModified ="UPDATE `Balance`
+                                SET `money` = :money
+                                WHERE `user_id` = :user_id";
+            $inBalanceData = $this->db->prepare($sqlBalanceModified);
             $inBalanceData->bindParam(':user_id', $dispensingId);
             $inBalanceData->bindParam(':money', $balanceNum);
             $inBalanceData->execute();
@@ -53,21 +64,29 @@ class Payment extends Connect
         try {
             $this->db->beginTransaction();
 
-            $balance = $this->db->prepare("SELECT `money` FROM `Balance` WHERE `user_id` = :user_id FOR UPDATE");
+            $sqlBalance = "SELECT `money`
+                        FROM `Balance`
+                        WHERE `user_id` = :user_id FOR UPDATE";
+            $balance = $this->db->prepare($sqlBalance);
             $balance->bindParam(':user_id', $depositId);
             $balance->execute();
             $result = $balance->fetchAll(PDO::FETCH_ASSOC);
 
             $balanceNum = $result[0]['money'] + $num;
 
-            $inCountData = $this->db->prepare("INSERT INTO `count_action` (`user_id`, `in`, `balance_action`, `time`) VALUES (:user_id, :in, :balance_action, :time)");
+            $sqlAddDetail = "INSERT INTO `count_action` (`user_id`, `in`, `balance_action`, `time`)
+                            VALUES (:user_id, :in, :balance_action, :time)";
+            $inCountData = $this->db->prepare($sqlAddDetail);
             $inCountData->bindParam(':user_id', $depositId);
             $inCountData->bindParam(':in', $num);
             $inCountData->bindParam(':balance_action', $balanceNum);
             $inCountData->bindParam(':time', $dateTime);
             $inCountData->execute();
 
-            $inBalanceData = $this->db->prepare("UPDATE `Balance` SET `money` = :money WHERE `user_id` = :user_id");
+            $sqlBalanceModified = "UPDATE `Balance`
+                                SET `money` = :money
+                                WHERE `user_id` = :user_id";
+            $inBalanceData = $this->db->prepare($sqlBalanceModified);
             $inBalanceData->bindParam(':user_id', $depositId);
             $inBalanceData->bindParam(':money', $balanceNum);
             $inBalanceData->execute();
