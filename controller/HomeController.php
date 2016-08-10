@@ -11,7 +11,7 @@ class HomeController extends Controller
     // 明細查詢
     function allList()
     {
-        $detailName = $_POST['detailName'];
+        $detailName = $_POST['detailId'];
 
         $usePaymentModel = $this->model("Payment");
         $data = $usePaymentModel->findAll($detailName);
@@ -25,8 +25,8 @@ class HomeController extends Controller
         if (isset($_POST['btn'])) {
             date_default_timezone_set('Asia/Taipei');
             $dateTime = date("Y-m-d H:i:s");
-            $name = $_POST['outName'];
-            $num = $_POST['outNumber'];
+            $name = $_POST['dispensingName'];
+            $num = $_POST['dispensingNumber'];
 
             $usePaymentModel = $this->model("Payment");
             $data = $usePaymentModel->dispensingModel($name, $num, $dateTime);

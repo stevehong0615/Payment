@@ -7,9 +7,9 @@
 <body>
     <form method="post" action="/Payment/Home/dispensing">
         輸入姓名：
-        <input type="text" name="outName" value="">
+        <input type="text" name="dispensingName" value="">
         輸入金額：
-        <input type="text" name="outNumber" value="">
+        <input type="text" name="dispensingNumber" value="">
         <input type = "submit" name="btn" value = "出款">
     </form>
     </br>
@@ -23,7 +23,7 @@
     <br/>
     <form method="post" action="/Payment/Home/allList">
         輸入姓名：
-        <input type="text" name="detailName" value="">
+        <input type="text" name="detailId" value="">
         <input type = "submit" name="btn" value = "明細查詢">
     </form>
 </body>

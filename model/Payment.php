@@ -3,10 +3,10 @@
 class Payment extends Connect
 {
     // 抓取資料表全部資料
-    function findAll($detailName)
+    function findAll($detailId)
     {
-        $balance = $this->db->prepare("SELECT * FROM `count_action` WHERE `user_name` = :user_name");
-        $balance->bindParam(':user_name', $detailName);
+        $balance = $this->db->prepare("SELECT * FROM `count_action` WHERE `user_id` = :user_id");
+        $balance->bindParam(':user_id', $detailId);
         $balance->execute();
         $result = $balance->fetchAll(PDO::FETCH_ASSOC);
 
@@ -19,7 +19,7 @@ class Payment extends Connect
         try {
             $this->db->beginTransaction();
 
-            $balance = $this->db->prepare("SELECT `money` FROM `Balance` WHERE `user_name` = :user_name FOR UPDATE");
+            $balance = $this->db->prepare("SELECT `money` FROM `Balance` WHERE `user_id` = :user_id FOR UPDATE");
             $balance->bindParam(':user_name', $name);
             $balance->execute();
             $result = $balance->fetchAll(PDO::FETCH_ASSOC);
