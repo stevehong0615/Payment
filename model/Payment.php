@@ -6,7 +6,7 @@ class Payment extends Connect
     function findAll($detailId)
     {
         $sqlBalance = "SELECT *
-                    FROM `count_action`
+                    FROM `Account_Details`
                     WHERE `user_id` = :user_id";
         $balance = $this->db->prepare($sqlBalance);
         $balance->bindParam(':user_id', $detailId);
@@ -32,11 +32,11 @@ class Payment extends Connect
 
             $balanceNum = $result[0]['money'] - $num;
 
-            $sqlAddDetail = "INSERT INTO `count_action` (`user_id`, `out`, `balance_action`, `time`)
-                            VALUES (:user_id, :out, :balance_action, :time)";
+            $sqlAddDetail = "INSERT INTO `Account_Details` (`user_id`, `dispensing`, `balance_action`, `time`)
+                            VALUES (:user_id, :dispensing, :balance_action, :time)";
             $inCountData = $this->db->prepare($sqlAddDetail);
             $inCountData->bindParam(':user_id', $dispensingId);
-            $inCountData->bindParam(':out', $num);
+            $inCountData->bindParam(':dispensing', $num);
             $inCountData->bindParam(':balance_action', $balanceNum);
             $inCountData->bindParam(':time', $dateTime);
             $inCountData->execute();
@@ -74,11 +74,11 @@ class Payment extends Connect
 
             $balanceNum = $result[0]['money'] + $num;
 
-            $sqlAddDetail = "INSERT INTO `count_action` (`user_id`, `in`, `balance_action`, `time`)
-                            VALUES (:user_id, :in, :balance_action, :time)";
+            $sqlAddDetail = "INSERT INTO `Account_Details` (`user_id`, `deposit`, `balance_action`, `time`)
+                            VALUES (:user_id, :deposit, :balance_action, :time)";
             $inCountData = $this->db->prepare($sqlAddDetail);
             $inCountData->bindParam(':user_id', $depositId);
-            $inCountData->bindParam(':in', $num);
+            $inCountData->bindParam(':deposit', $num);
             $inCountData->bindParam(':balance_action', $balanceNum);
             $inCountData->bindParam(':time', $dateTime);
             $inCountData->execute();
