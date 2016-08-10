@@ -7,7 +7,7 @@
 <body>
     <form method="post" action="/Payment/Home/dispensing">
         輸入姓名：
-        <input type="text" name="dispensingName" value="">
+        <input type="text" name="dispensingId" value="">
         輸入金額：
         <input type="text" name="dispensingNumber" value="">
         <input type = "submit" name="btn" value = "出款">

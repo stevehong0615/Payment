@@ -25,11 +25,11 @@ class HomeController extends Controller
         if (isset($_POST['btn'])) {
             date_default_timezone_set('Asia/Taipei');
             $dateTime = date("Y-m-d H:i:s");
-            $name = $_POST['dispensingName'];
+            $dispensingId = $_POST['dispensingId'];
             $num = $_POST['dispensingNumber'];
 
             $usePaymentModel = $this->model("Payment");
-            $data = $usePaymentModel->dispensingModel($name, $num, $dateTime);
+            $data = $usePaymentModel->dispensingModel($dispensingId, $num, $dateTime);
 
             $this->view("alert", '成功出款');
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
