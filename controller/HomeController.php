@@ -49,7 +49,7 @@ class HomeController extends Controller
 
         $Payment = $this->model("Payment");
 
-        if (isset($_POST['btnWithDraw'])) {
+        if (isset($_POST['btnWithDrawal'])) {
             $judgmentMoney = "-" . $money;
             $Payment->actionAccount($userId, $money, $emptyMoney, $datetime, $judgmentMoney);
 

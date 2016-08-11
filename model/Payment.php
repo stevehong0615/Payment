@@ -21,7 +21,7 @@ class Payment extends Connect
     {
         $sqlBalance = "SELECT *
             FROM `balance`
-            WHERE `user_id` = :user_id";
+            WHERE `user_id` = :user_id FOR UPDATE";
         $balance = $this->db->prepare($sqlBalance);
         $balance->bindParam(':user_id', $userId);
         $balance->execute();
@@ -48,33 +48,31 @@ class Payment extends Connect
     {
         try{
             $this->db->beginTransaction();
+
             $result = $this->findBalance($userId);
 
             $balance = $result[0]['money'] + $judgmentMoney;
 
+            $sqlAddDetail = "INSERT INTO `account_details`";
+            $sqlAddDetail .= "(`user_id`, `withdrawal`, `deposit`, `balance`, `datetime`)";
+            $sqlAddDetail .= "VALUES (:user_id, :withdrawal, :deposit, :balance, :datetime)";
+            $addDetail = $this->db->prepare($sqlAddDetail);
+            $addDetail->bindParam(':user_id', $userId);
+            $addDetail->bindParam(':balance', $balance);
+            $addDetail->bindParam(':datetime', $datetime);
+
             if ($judgmentMoney < 0) {
-                $sqlAddDetail = "INSERT INTO `account_details` (`user_id`, `withdraw`, `deposit`, `balance`, `datetime`)
-                    VALUES (:user_id, :withdraw, :deposit, :balance, :datetime)";
-                $addDetail = $this->db->prepare($sqlAddDetail);
-                $addDetail->bindParam(':user_id', $userId);
-                $addDetail->bindParam(':withdraw', $money);
+                $addDetail->bindParam(':withdrawal', $money);
                 $addDetail->bindParam(':deposit', $emptyMoney);
-                $addDetail->bindParam(':balance', $balance);
-                $addDetail->bindParam(':datetime', $datetime);
-                $addDetail->execute();
+
             }
 
             if ($judgmentMoney > 0) {
-                $sqlAddDetail = "INSERT INTO `account_details` (`user_id`, `withdraw`, `deposit`, `balance`, `datetime`)
-                    VALUES (:user_id, :withdraw, :deposit, :balance, :datetime)";
-                $addDetail = $this->db->prepare($sqlAddDetail);
-                $addDetail->bindParam(':user_id', $userId);
-                $addDetail->bindParam(':withdraw', $emptyMoney);
+                $addDetail->bindParam(':withdrawal', $emptyMoney);
                 $addDetail->bindParam(':deposit', $money);
-                $addDetail->bindParam(':balance', $balance);
-                $addDetail->bindParam(':datetime', $datetime);
-                $addDetail->execute();
             }
+
+            $addDetail->execute();
 
             $this->updateBalance($userId, $balance);
 
