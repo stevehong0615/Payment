@@ -13,8 +13,8 @@ class HomeController extends Controller
     {
         $userId = $_POST['userId'];
 
-        $Payment = $this->model("Payment");
-        $detail = $Payment->findAll($userId);
+        $payment = $this->model("Payment");
+        $detail = $payment->findAll($userId);
 
         $this->view("Detail", $detail);
     }
@@ -24,24 +24,23 @@ class HomeController extends Controller
     {
         $userId = $_POST['userId'];
 
-        $Payment = $this->model("Payment");
-        $balance = $Payment->findBalance($userId);
+        $payment = $this->model("Payment");
+        $balance = $payment->findBalance($userId);
 
         $this->view("Balance", $balance);
     }
 
     // 執行出款、存款
-    function accountAction(){
+    function accountAction()
+    {
         $userId = $_POST['userId'];
-        $money = $_POST['money'];
-        $emptyMoney = null;
         date_default_timezone_set('Asia/Taipei');
         $datetime = date("Y-m-d H:i:s");
 
-        $Payment = $this->model("Payment");
+        $payment = $this->model("Payment");
 
-        if (isset($_POST['btnWithDrawal'])) {
-            $balance = $Payment->findBalance($userId);
+        if (isset($_POST['btnWithDraw'])) {
+            $balance = $payment->findBalance($userId);
 
             if ($balance[0]['money'] < $money) {
                 $this->view("Alert", '餘額不足');
@@ -49,8 +48,14 @@ class HomeController extends Controller
             }
 
             if ($balance[0]['money'] >= $money) {
-                $judgmentMoney = "-" . $money;
-                $Payment->actionAccount($userId, $money, $emptyMoney, $datetime, $judgmentMoney);
+                $withdraw = $_POST['money'];
+                $deposit = null;
+                $money = "-" . $withdraw;
+
+                $payment->computeBalance($userId, $money);
+                $balance = $payment->findBalance($userId);
+                $balance = $balance[0]['money'];
+                $payment->actionAccount($userId, $withdraw, $deposit, $balance, $datetime);
 
                 $this->view("Alert", '成功出款');
                 header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
@@ -59,7 +64,7 @@ class HomeController extends Controller
 
         if (isset($_POST['btnDeposit'])) {
             $judgmentMoney = $money;
-            $Payment->actionAccount($userId, $money, $emptyMoney, $datetime, $judgmentMoney);
+            $payment->actionAccount($userId, $money, $emptyMoney, $datetime, $judgmentMoney);
 
             $this->view("Alert", '成功存款');
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");

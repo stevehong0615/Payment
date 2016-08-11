@@ -14,7 +14,7 @@
         </tr>
         <?php foreach($data as $key => $value) { ?>
             <tr>
-                <td><?php echo $value['withdrawal']; ?></td>
+                <td><?php echo $value['withdraw']; ?></td>
                 <td><?php echo $value['deposit']; ?></td>
                 <td><?php echo $value['datetime']; ?></td>
                 <td><?php echo $value['balance']; ?></td>

@@ -30,50 +30,34 @@ class Payment extends Connect
         return $result;
     }
 
-    // 修改目前餘額
-    function updateBalance($userId, $balance){
-        $sqlUpdateBalance ="UPDATE `balance`
-            SET `money` = :money
+    // 計算餘額
+    function computeBalance($userId, $money)
+    {
+        $sqlBalance = "UPDATE `balance`
+            SET `money` = `money` + :money
             WHERE `user_id` = :user_id";
-        $updateBalance = $this->db->prepare($sqlUpdateBalance);
+        $updateBalance = $this->db->prepare($sqlBalance);
         $updateBalance->bindParam(':user_id', $userId);
-        $updateBalance->bindParam(':money', $balance);
+        $updateBalance->bindParam(':money', $money);
         $updateBalance->execute();
 
         return true;
     }
 
     // 出款、存款
-    function actionAccount($userId, $money, $emptyMoney, $datetime, $judgmentMoney)
+    function actionAccount($userId, $withdraw, $deposit, $balance, $datetime)
     {
         try{
             $this->db->beginTransaction();
 
-            $result = $this->findBalance($userId);
-
-            $balance = $result[0]['money'] + $judgmentMoney;
-
-            $sqlAddDetail = "INSERT INTO `account_details`";
-            $sqlAddDetail .= "(`user_id`, `withdrawal`, `deposit`, `balance`, `datetime`)";
-            $sqlAddDetail .= "VALUES (:user_id, :withdrawal, :deposit, :balance, :datetime)";
+            $sqlAddDetail = "INSERT INTO `account_details` (`user_id`, `withdraw`, `deposit`, `balance`, `datetime`) VALUES (:user_id, :withdraw, :deposit, :balance, :datetime)";
             $addDetail = $this->db->prepare($sqlAddDetail);
             $addDetail->bindParam(':user_id', $userId);
+            $addDetail->bindParam(':withdraw', $withdraw);
+            $addDetail->bindParam(':deposit', $deposit);
             $addDetail->bindParam(':balance', $balance);
             $addDetail->bindParam(':datetime', $datetime);
-
-            if ($judgmentMoney < 0) {
-                $addDetail->bindParam(':withdrawal', $money);
-                $addDetail->bindParam(':deposit', $emptyMoney);
-            }
-
-            if ($judgmentMoney > 0) {
-                $addDetail->bindParam(':withdrawal', $emptyMoney);
-                $addDetail->bindParam(':deposit', $money);
-            }
-
             $addDetail->execute();
-
-            $this->updateBalance($userId, $balance);
 
             $this->db->commit();
 

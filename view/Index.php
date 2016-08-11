@@ -10,7 +10,7 @@
         <input type = "text" name = "userId" value = "" pattern = "[0-9]{1,15}">
         輸入金額：
         <input type = "text" name = "money" value = "" pattern = "[0-9]{1,15}">
-        <input type = "submit" name = "btnWithDrawal" value = "出款">
+        <input type = "submit" name = "btnWithDraw" value = "出款">
         <input type = "submit" name = "btnDeposit" value = "存款">
     </form>
     <br/>
