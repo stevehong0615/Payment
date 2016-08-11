@@ -63,5 +63,12 @@ class HomeController extends Controller
 
             $this->view("Detail", $detailData);
         }
+
+        if (isset($_POST['btnBalance'])) {
+            $Payment = $this->model("Payment");
+            $balanceData = $Payment->findBalance($userId);
+
+            $this->view("Balance", $balanceData);
+        }
     }
 }
