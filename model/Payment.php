@@ -3,13 +3,13 @@
 class Payment extends Connect
 {
     // 抓取資料表全部資料
-    function findAll($detailId)
+    function findAll($userId)
     {
         $sqlBalance = "SELECT *
-                    FROM `Account_Details`
+                    FROM `account_details`
                     WHERE `user_id` = :user_id";
         $balance = $this->db->prepare($sqlBalance);
-        $balance->bindParam(':user_id', $detailId);
+        $balance->bindParam(':user_id', $userId);
         $balance->execute();
         $result = $balance->fetchAll(PDO::FETCH_ASSOC);
 

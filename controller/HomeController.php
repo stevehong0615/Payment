@@ -5,7 +5,7 @@ class HomeController extends Controller
     // 主頁
     function index()
     {
-        $this->view("index");
+        $this->view("Index");
     }
 
     // 明細查詢
@@ -16,7 +16,7 @@ class HomeController extends Controller
         $usePaymentModel = $this->model("Payment");
         $data = $usePaymentModel->findAll($detailName);
 
-        $this->view("detail", $data);
+        $this->view("Detail", $data);
     }
 
     // 出款
@@ -31,7 +31,7 @@ class HomeController extends Controller
             $usePaymentModel = $this->model("Payment");
             $data = $usePaymentModel->dispensingModel($dispensingId, $num, $dateTime);
 
-            $this->view("alert", '成功出款');
+            $this->view("Alert", '成功出款');
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
         }
     }
@@ -48,12 +48,20 @@ class HomeController extends Controller
             $usePaymentModel = $this->model("Payment");
             $data = $usePaymentModel->depositModel($depositId, $num, $dateTime);
 
-            $this->view("alert", '成功存款');
+            $this->view("Alert", '成功存款');
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
         }
     }
 
-    function accountInquire(){
+    function accountInquire()
+    {
+        $userId = $_POST['userId'];
 
+        if (isset($_POST['btnDetail'])) {
+            $Payment = $this->model("Payment");
+            $detailData = $Payment->findAll($userId);
+
+            $this->view("Detail", $detailData);
+        }
     }
 }
