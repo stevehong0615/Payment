@@ -9,34 +9,25 @@ class HomeController extends Controller
     }
 
     // 明細查詢
-    function allList()
-    {
-        $detailName = $_POST['detailId'];
-
-        $usePaymentModel = $this->model("Payment");
-        $data = $usePaymentModel->findAll($detailName);
-
-        $this->view("Detail", $data);
-    }
-
-    // 查詢目前餘額
-    function accountInquire()
+    function detail()
     {
         $userId = $_POST['userId'];
 
-        if (isset($_POST['btnDetail'])) {
-            $Payment = $this->model("Payment");
-            $detailData = $Payment->findAll($userId);
+        $Payment = $this->model("Payment");
+        $detail = $Payment->findAll($userId);
 
-            $this->view("Detail", $detailData);
-        }
+        $this->view("Detail", $detail);
+    }
 
-        if (isset($_POST['btnBalance'])) {
-            $Payment = $this->model("Payment");
-            $balanceData = $Payment->findBalance($userId);
+    // 查詢目前餘額
+    function balance()
+    {
+        $userId = $_POST['userId'];
 
-            $this->view("Balance", $balanceData);
-        }
+        $Payment = $this->model("Payment");
+        $balance = $Payment->findBalance($userId);
+
+        $this->view("Balance", $balance);
     }
 
     // 執行出款、存款

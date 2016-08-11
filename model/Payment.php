@@ -64,7 +64,6 @@ class Payment extends Connect
             if ($judgmentMoney < 0) {
                 $addDetail->bindParam(':withdrawal', $money);
                 $addDetail->bindParam(':deposit', $emptyMoney);
-
             }
 
             if ($judgmentMoney > 0) {

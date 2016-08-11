@@ -6,7 +6,7 @@
 </head>
 <body>
     <form method = "post" action = "/Payment/Home/accountAction">
-        輸入編號：
+        輸入使用者編號：
         <input type = "text" name = "userId" value = "" pattern = "[0-9]{1,15}">
         輸入金額：
         <input type = "text" name = "money" value = "" pattern = "[0-9]{1,15}">
@@ -14,11 +14,15 @@
         <input type = "submit" name = "btnDeposit" value = "存款">
     </form>
     <br/>
-    <form method = "post" action = "/Payment/Home/accountInquire">
-        輸入編號：
+    <form method = "post" action = "/Payment/Home/detail">
+        輸入使用者編號：
         <input type = "text" name = "userId" value = "" pattern = "[0-9]{1,15}">
-        <input type = "submit" name = "btnDetail" value = "明細查詢">
-        <input type = "submit" name = "btnBalance" value = "查詢餘額">
+        <input type = "submit" name = "btn" value = "明細查詢">
+    </form>
+    <form method = "post" action = "/Payment/Home/balance">
+        輸入使用者編號：
+        <input type = "text" name = "userId" value = "" pattern = "[0-9]{1,15}">
+        <input type = "submit" name = "btn" value = "查詢餘額">
     </form>
 </body>
 </html>
