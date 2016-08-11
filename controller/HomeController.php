@@ -50,12 +50,22 @@ class HomeController extends Controller
         $Payment = $this->model("Payment");
 
         if (isset($_POST['btnWithDrawal'])) {
-            $judgmentMoney = "-" . $money;
-            $Payment->actionAccount($userId, $money, $emptyMoney, $datetime, $judgmentMoney);
+            $balance = $Payment->findBalance($userId);
 
-            $this->view("Alert", '成功出款');
-            header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
+            if ($balance[0]['money'] < $money) {
+                $this->view("Alert", '餘額不足');
+                header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
+            }
+
+            if ($balance[0]['money'] >= $money) {
+                $judgmentMoney = "-" . $money;
+                $Payment->actionAccount($userId, $money, $emptyMoney, $datetime, $judgmentMoney);
+
+                $this->view("Alert", '成功出款');
+                header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
+            }
         }
+
         if (isset($_POST['btnDeposit'])) {
             $judgmentMoney = $money;
             $Payment->actionAccount($userId, $money, $emptyMoney, $datetime, $judgmentMoney);
