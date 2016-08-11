@@ -50,7 +50,9 @@ class Payment extends Connect
         try{
             $this->db->beginTransaction();
 
-            $sqlAddDetail = "INSERT INTO `account_details` (`user_id`, `withdraw`, `deposit`, `balance`, `datetime`) VALUES (:user_id, :withdraw, :deposit, :balance, :datetime)";
+            $sqlAddDetail = "INSERT INTO `account_details`
+                (`user_id`, `withdraw`, `deposit`, `balance`, `datetime`)
+                VALUES (:user_id, :withdraw, :deposit, :balance, :datetime)";
             $addDetail = $this->db->prepare($sqlAddDetail);
             $addDetail->bindParam(':user_id', $userId);
             $addDetail->bindParam(':withdraw', $withdraw);

@@ -63,8 +63,13 @@ class HomeController extends Controller
         }
 
         if (isset($_POST['btnDeposit'])) {
-            $judgmentMoney = $money;
-            $payment->actionAccount($userId, $money, $emptyMoney, $datetime, $judgmentMoney);
+            $deposit = $_POST['money'];
+            $withdraw = null;
+
+            $payment->computeBalance($userId, $deposit);
+            $balance = $payment->findBalance($userId);
+            $balance = $balance[0]['money'];
+            $payment->actionAccount($userId, $withdraw, $deposit, $balance, $datetime);
 
             $this->view("Alert", '成功存款');
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
