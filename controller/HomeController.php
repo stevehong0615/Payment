@@ -52,4 +52,8 @@ class HomeController extends Controller
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
         }
     }
+
+    function accountInquire(){
+
+    }
 }
