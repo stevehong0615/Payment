@@ -43,48 +43,22 @@ class HomeController extends Controller
     function accountAction(){
         $userId = $_POST['userId'];
         $money = $_POST['money'];
+        $emptyMoney = null;
         date_default_timezone_set('Asia/Taipei');
         $datetime = date("Y-m-d H:i:s");
 
         $Payment = $this->model("Payment");
 
         if (isset($_POST['btnWithDraw'])) {
-            $Payment->withdraw($userId, $money, $datetime);
+            $judgmentMoney = "-" . $money;
+            $Payment->actionAccount($userId, $money, $emptyMoney, $datetime, $judgmentMoney);
 
             $this->view("Alert", '成功出款');
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
         }
-    }
-
-
-    // 出款
-    function dispensing()
-    {
-        if (isset($_POST['btn'])) {
-            date_default_timezone_set('Asia/Taipei');
-            $dateTime = date("Y-m-d H:i:s");
-            $dispensingId = $_POST['dispensingId'];
-            $num = $_POST['dispensingNumber'];
-
-            $usePaymentModel = $this->model("Payment");
-            $data = $usePaymentModel->dispensingModel($dispensingId, $num, $dateTime);
-
-            $this->view("Alert", '成功出款');
-            header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
-        }
-    }
-
-    // 存款
-    function deposit()
-    {
-        if(isset($_POST['btn'])) {
-            date_default_timezone_set('Asia/Taipei');
-            $dateTime = date("Y-m-d H:i:s");
-            $depositId = $_POST['depositId'];
-            $num = $_POST['depositNumber'];
-
-            $usePaymentModel = $this->model("Payment");
-            $data = $usePaymentModel->depositModel($depositId, $num, $dateTime);
+        if (isset($_POST['btnDeposit'])) {
+            $judgmentMoney = $money;
+            $Payment->actionAccount($userId, $money, $emptyMoney, $datetime, $judgmentMoney);
 
             $this->view("Alert", '成功存款');
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");

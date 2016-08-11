@@ -43,23 +43,38 @@ class Payment extends Connect
         return true;
     }
 
-    // 出款
-    function withdraw($userId, $money, $datetime)
+    // 出款、存款
+    function actionAccount($userId, $money, $emptyMoney, $datetime, $judgmentMoney)
     {
         try{
             $this->db->beginTransaction();
             $result = $this->findBalance($userId);
 
-            $balance = $result[0]['money'] - $money;
+            $balance = $result[0]['money'] + $judgmentMoney;
 
-            $sqlAddDetail = "INSERT INTO `account_details` (`user_id`, `withdraw`, `balance`, `datetime`)
-                VALUES (:user_id, :withdraw, :balance, :datetime)";
-            $addDetail = $this->db->prepare($sqlAddDetail);
-            $addDetail->bindParam(':user_id', $userId);
-            $addDetail->bindParam(':withdraw', $money);
-            $addDetail->bindParam(':balance', $balance);
-            $addDetail->bindParam(':datetime', $datetime);
-            $addDetail->execute();
+            if ($judgmentMoney < 0) {
+                $sqlAddDetail = "INSERT INTO `account_details` (`user_id`, `withdraw`, `deposit`, `balance`, `datetime`)
+                    VALUES (:user_id, :withdraw, :deposit, :balance, :datetime)";
+                $addDetail = $this->db->prepare($sqlAddDetail);
+                $addDetail->bindParam(':user_id', $userId);
+                $addDetail->bindParam(':withdraw', $money);
+                $addDetail->bindParam(':deposit', $emptyMoney);
+                $addDetail->bindParam(':balance', $balance);
+                $addDetail->bindParam(':datetime', $datetime);
+                $addDetail->execute();
+            }
+
+            if ($judgmentMoney > 0) {
+                $sqlAddDetail = "INSERT INTO `account_details` (`user_id`, `withdraw`, `deposit`, `balance`, `datetime`)
+                    VALUES (:user_id, :withdraw, :deposit, :balance, :datetime)";
+                $addDetail = $this->db->prepare($sqlAddDetail);
+                $addDetail->bindParam(':user_id', $userId);
+                $addDetail->bindParam(':withdraw', $emptyMoney);
+                $addDetail->bindParam(':deposit', $money);
+                $addDetail->bindParam(':balance', $balance);
+                $addDetail->bindParam(':datetime', $datetime);
+                $addDetail->execute();
+            }
 
             $this->updateBalance($userId, $balance);
 
@@ -72,92 +87,4 @@ class Payment extends Connect
 
         return true;
     }
-
-
-
-
-
-    // 寫入出款金額與計算餘額
-    // function dispensingModel($dispensingId, $num, $dateTime)
-    // {
-    //     try {
-    //         $this->db->beginTransaction();
-
-    //         $sqlBalance = "SELECT `money`
-    //                     FROM `Balance`
-    //                     WHERE `user_id` = :user_id FOR UPDATE";
-    //         $balance = $this->db->prepare($sqlBalance);
-    //         $balance->bindParam(':user_id', $dispensingId);
-    //         $balance->execute();
-    //         $result = $balance->fetchAll(PDO::FETCH_ASSOC);
-
-    //         $balanceNum = $result[0]['money'] - $num;
-
-    //         $sqlAddDetail = "INSERT INTO `Account_Details` (`user_id`, `dispensing`, `balance_action`, `time`)
-    //                         VALUES (:user_id, :dispensing, :balance_action, :time)";
-    //         $inCountData = $this->db->prepare($sqlAddDetail);
-    //         $inCountData->bindParam(':user_id', $dispensingId);
-    //         $inCountData->bindParam(':dispensing', $num);
-    //         $inCountData->bindParam(':balance_action', $balanceNum);
-    //         $inCountData->bindParam(':time', $dateTime);
-    //         $inCountData->execute();
-
-    //         $sqlBalanceModified ="UPDATE `Balance`
-    //                             SET `money` = :money
-    //                             WHERE `user_id` = :user_id";
-    //         $inBalanceData = $this->db->prepare($sqlBalanceModified);
-    //         $inBalanceData->bindParam(':user_id', $dispensingId);
-    //         $inBalanceData->bindParam(':money', $balanceNum);
-    //         $inBalanceData->execute();
-
-    //         $this->db->commit();
-
-    //     } catch (Exception $err) {
-    //         $this->db->rollBack();
-    //     }
-
-    //     return true;
-    // }
-
-    // // 寫入存款金額與計算餘額
-    // function depositModel($depositId, $num, $dateTime)
-    // {
-    //     try {
-    //         $this->db->beginTransaction();
-
-    //         $sqlBalance = "SELECT `money`
-    //                     FROM `Balance`
-    //                     WHERE `user_id` = :user_id FOR UPDATE";
-    //         $balance = $this->db->prepare($sqlBalance);
-    //         $balance->bindParam(':user_id', $depositId);
-    //         $balance->execute();
-    //         $result = $balance->fetchAll(PDO::FETCH_ASSOC);
-
-    //         $balanceNum = $result[0]['money'] + $num;
-
-    //         $sqlAddDetail = "INSERT INTO `Account_Details` (`user_id`, `deposit`, `balance_action`, `time`)
-    //                         VALUES (:user_id, :deposit, :balance_action, :time)";
-    //         $inCountData = $this->db->prepare($sqlAddDetail);
-    //         $inCountData->bindParam(':user_id', $depositId);
-    //         $inCountData->bindParam(':deposit', $num);
-    //         $inCountData->bindParam(':balance_action', $balanceNum);
-    //         $inCountData->bindParam(':time', $dateTime);
-    //         $inCountData->execute();
-
-    //         $sqlBalanceModified = "UPDATE `Balance`
-    //                             SET `money` = :money
-    //                             WHERE `user_id` = :user_id";
-    //         $inBalanceData = $this->db->prepare($sqlBalanceModified);
-    //         $inBalanceData->bindParam(':user_id', $depositId);
-    //         $inBalanceData->bindParam(':money', $balanceNum);
-    //         $inBalanceData->execute();
-
-    //         $this->db->commit();
-
-    //     } catch (Exception $err) {
-    //         $this->db->rollBack();
-    //     }
-
-    //     return true;
-    // }
 }
