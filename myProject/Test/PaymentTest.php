@@ -1,6 +1,7 @@
 <?php
 
-require_once 'myProject/Payment.php';
+require_once 'core/Connect.php';
+require_once 'model/Payment.php';
 
 class PaymentTest extends \PHPUnit_Framework_TestCase
 {
