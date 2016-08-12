@@ -2,6 +2,21 @@
 
 class Payment extends Connect
 {
+    function beginTransaction()
+    {
+        $this->db->beginTransaction();
+    }
+
+    function commit()
+    {
+        $this->db->commit();
+    }
+
+    function rollBack()
+    {
+        $this->db->rollBack();
+    }
+
     // 抓取全部明細
     function findAll($userId)
     {
@@ -47,26 +62,16 @@ class Payment extends Connect
     // 出款、存款
     function actionAccount($userId, $withdraw, $deposit, $balance, $datetime)
     {
-        try{
-            $this->db->beginTransaction();
-
-            $sqlAddDetail = "INSERT INTO `account_details`
-                (`user_id`, `withdraw`, `deposit`, `balance`, `datetime`)
-                VALUES (:user_id, :withdraw, :deposit, :balance, :datetime)";
-            $addDetail = $this->db->prepare($sqlAddDetail);
-            $addDetail->bindParam(':user_id', $userId);
-            $addDetail->bindParam(':withdraw', $withdraw);
-            $addDetail->bindParam(':deposit', $deposit);
-            $addDetail->bindParam(':balance', $balance);
-            $addDetail->bindParam(':datetime', $datetime);
-            $addDetail->execute();
-
-            $this->db->commit();
-
-        } catch (Exception $err) {
-            $this->db->rollBack();
-            $msg = $err->getMessage();
-        }
+        $sqlAddDetail = "INSERT INTO `account_details`
+            (`user_id`, `withdraw`, `deposit`, `balance`, `datetime`)
+            VALUES (:user_id, :withdraw, :deposit, :balance, :datetime)";
+        $addDetail = $this->db->prepare($sqlAddDetail);
+        $addDetail->bindParam(':user_id', $userId);
+        $addDetail->bindParam(':withdraw', $withdraw);
+        $addDetail->bindParam(':deposit', $deposit);
+        $addDetail->bindParam(':balance', $balance);
+        $addDetail->bindParam(':datetime', $datetime);
+        $addDetail->execute();
 
         return true;
     }

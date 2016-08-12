@@ -50,12 +50,23 @@ class HomeController extends Controller
             if ($balance[0]['money'] >= $money) {
                 $withdraw = $_POST['money'];
                 $deposit = null;
-                $money = "-" . $withdraw;
 
-                $payment->computeBalance($userId, $money);
-                $balance = $payment->findBalance($userId);
-                $balance = $balance[0]['money'];
-                $payment->actionAccount($userId, $withdraw, $deposit, $balance, $datetime);
+                try {
+                    $payment->beginTransaction();
+
+                    $payment->computeBalance($userId, -$withdraw);
+                    $balance = $payment->findBalance($userId);
+                    $balance = $balance[0]['money'];
+                    $payment->actionAccount($userId, $withdraw, $deposit, $balance, $datetime);
+
+                    $payment->commit();
+
+                } catch (Exception $err) {
+                    $payment->rollBack();
+                    $msg = $err->getMessage();
+
+                    $this->view("Alert", $msg);
+                }
 
                 $this->view("Alert", '成功出款');
                 header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
@@ -66,10 +77,22 @@ class HomeController extends Controller
             $deposit = $_POST['money'];
             $withdraw = null;
 
-            $payment->computeBalance($userId, $deposit);
-            $balance = $payment->findBalance($userId);
-            $balance = $balance[0]['money'];
-            $payment->actionAccount($userId, $withdraw, $deposit, $balance, $datetime);
+            try {
+                $payment->beginTransaction();
+
+                $payment->computeBalance($userId, $deposit);
+                $balance = $payment->findBalance($userId);
+                $balance = $balance[0]['money'];
+                $payment->actionAccount($userId, $withdraw, $deposit, $balance, $datetime);
+
+                $payment->commit();
+
+            } catch (Exception $err) {
+                $payment->rollBack();
+                $msg = $err->getMessage();
+
+                $this->view("Alert", $msg);
+            }
 
             $this->view("Alert", '成功存款');
             header("refresh:0, url=https://lab-stevehong0615.c9users.io/Payment/");
